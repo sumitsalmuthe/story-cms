@@ -6,7 +6,7 @@ import FooterV2 from "../components/layout/FooterV2";
 
 import HeroV2 from "../components/hero/HeroV2";
 
-import StoryRowV2 from "../components/story/StoryRowV2";
+import StoryRow from "../components/story/StoryRow";
 
 import GenreSection from "../components/genre/GenreSection";
 
@@ -49,7 +49,7 @@ function HomeV2() {
 
       <HeroV2 />
 
-      <StoryRowV2
+      <StoryRow
         title="🔥 Trending Stories"
         stories={
           [...stories]
@@ -60,7 +60,7 @@ function HomeV2() {
 
       <GenreSection />
 
-      <StoryRowV2
+      <StoryRow
         title="✨ Latest Stories"
         stories={
           [...stories]
@@ -74,7 +74,7 @@ function HomeV2() {
         }
       />
 
-      <StoryRowV2
+      <StoryRow
         title="📚 Popular On StoryHub"
         stories={
           [...stories]

@@ -1,7 +1,7 @@
-import "./StoryCardV2.css";
+import "./StoryCard.css";
 import { Link } from "react-router-dom";
 
-function StoryCardV2({ story }) {
+function StoryCard({ story }) {
 
   const readingTime = Math.max(
     1,
@@ -69,4 +69,4 @@ function StoryCardV2({ story }) {
 
 }
 
-export default StoryCardV2;
+export default StoryCard;

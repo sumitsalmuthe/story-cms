@@ -3,7 +3,7 @@ import Navbar from "../components/layout/Navbar";
 import API from "../services/api";
 import Footer from "../components/layout/Footer";
 import HeroBanner from "../components/HeroBanner";
-import StoryRow from "../components/StoryRow";
+import StoryRow from "../components/story/StoryRow";
 import GenreSection from "../components/GenreSection";
 
 import WriterBanner from "../components/WriterBanner";

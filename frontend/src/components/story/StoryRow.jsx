@@ -1,23 +1,28 @@
 import "./StoryRow.css";
 import StoryCard from "./StoryCard";
 
-function StoryRow({ title, stories }) {
+function StoryRow({
+  title,
+  stories
+}) {
 
   return (
 
-    <section className="story-row">
+    <section className="story-row-v2">
 
-      <div className="row-header">
+      <div className="row-title">
 
-        <h2>{title}</h2>
+        <h2>
+          {title}
+        </h2>
 
         <button>
-          View All
+          View All →
         </button>
 
       </div>
 
-      <div className="row-content">
+      <div className="story-slider">
 
         {stories.map((story) => (
 
@@ -33,6 +38,7 @@ function StoryRow({ title, stories }) {
     </section>
 
   );
+
 }
 
 export default StoryRow;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/layout/Navbar";
-import StoryCard from "../components/StoryCard";
+import StoryCard from "../components/story/StoryCard";
 import API from "../services/api";
 
 import "./Popular.css";
