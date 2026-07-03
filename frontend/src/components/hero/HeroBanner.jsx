@@ -1,5 +1,5 @@
 import "./HeroBanner.css";
-import heroImage from "../assets/hero.png";
+import heroImage from "../../assets/hero.png";
 
 function HeroBanner() {
   const tags = [

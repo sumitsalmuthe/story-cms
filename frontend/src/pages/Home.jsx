@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/layout/Navbar";
 import API from "../services/api";
 import Footer from "../components/layout/Footer";
-import HeroBanner from "../components/HeroBanner";
+import HeroBanner from "../components/hero/HeroBanner";
 import StoryRow from "../components/story/StoryRow";
 import GenreSection from "../components/GenreSection";
 
