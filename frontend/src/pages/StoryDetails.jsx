@@ -1,151 +1,458 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import Navbar from "../components/Navbar";
-import API from "../services/api";
-import "./StoryDetails.css";
+import Navbar from "../components/layout/Navbar";
 import StoryCard from "../components/StoryCard";
 
+import API from "../services/api";
+
+import "./StoryDetails.css";
+
 function StoryDetails() {
+
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const [story, setStory] = useState(null);
 
+  const [chapters, setChapters] = useState([]);
+
   const [relatedStories, setRelatedStories] = useState([]);
 
- 
+  const [loading, setLoading] = useState(true);
 
-async function fetchStory() {
-  try {
+  // ==========================
+  // Fetch Story
+  // ==========================
 
-    const res = await API.get(
-      `/stories/${id}`
-    );
+  const fetchStory = async () => {
 
-    setStory(res.data);
+    try {
 
-    const allStories =
-      await API.get("/stories");
+      setLoading(true);
 
-    const related =
-      allStories.data.filter(
+      const res = await API.get(`/stories/${id}`);
+
+      setStory(res.data.story);
+
+      setChapters(res.data.chapters);
+
+      const allStories = await API.get("/stories");
+
+      const related = allStories.data.filter(
         (item) =>
-          item.category ===
-            res.data.category &&
-          item._id !==
-            res.data._id
+          item.category === res.data.story.category &&
+          item._id !== res.data.story._id
       );
 
-    setRelatedStories(
-      related.slice(0, 3)
-    );
+      setRelatedStories(related.slice(0,4));
 
-  } catch (error) {
-    console.log(error);
-  }
-}
+    } catch (err) {
+
+      console.log(err);
+
+    } finally {
+
+      setLoading(false);
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+    }
+
+  };
 
   useEffect(() => {
+
     fetchStory();
-  }, [id]);
 
+  },[id]);
 
- if (!story) {
-  return (
-    <>
-      <Navbar />
-      <div className="loading">
+  // ==========================
+  // Loading
+  // ==========================
+
+  if(loading){
+
+    return(
+
+      <>
+      <Navbar/>
+
+      <div className="story-loading">
+
+        <div className="loader"></div>
+
         <h2>Loading Story...</h2>
+
       </div>
-    </>
-  );
-}
+
+      </>
+
+    );
+
+  }
+
+  if(!story){
+
+    return(
+
+      <>
+      <Navbar/>
+
+      <div className="story-loading">
+
+        <h2>Story Not Found</h2>
+
+      </div>
+
+      </>
+
+    );
+
+  }
 
   const readingTime = Math.max(
-  1,
-  Math.ceil(
-    story.content.split(" ").length / 200
-  )
-);
+    1,
+    chapters.length
+  );
 
-  return (
+  return(
+
     <>
-      <Navbar />
 
-    <div className="story-details">
+    <Navbar/>
 
-{story.coverImage && (
-  <img
-    src={story.coverImage}
-    alt={story.title}
-    className="story-cover"
-  />
-)}
+    <div className="story-page">
 
-  <div className="story-info">
+      {/* HERO */}
 
-    <span className="story-category">
-      {story.category}
-    </span>
+      <div
+        className="story-hero"
+        style={{
+          backgroundImage:
+          `linear-gradient(rgba(10,10,10,.82),rgba(10,10,10,.96)),url(${story.coverImage})`
+        }}
+      >
 
-    <h1 className="story-title">
-      {story.title}
-    </h1>
+        <div className="hero-content">
 
-    <div className="story-meta">
+          {/* COVER */}
 
-  <span>
-    👁 {story.views} Views
-  </span>
+          <div className="hero-cover">
 
-  <span>
-    📖 {readingTime} min read
-  </span>
+            <img
 
-  <span>
-    📅 {new Date(story.createdAt).toLocaleDateString()}
-  </span>
+              src={story.coverImage}
 
-</div>
+              alt={story.title}
 
-    <p className="story-description">
-      {story.shortDescription}
-    </p>
+            />
 
-    <div className="story-content">
-      {story.content}
+          </div>
+
+          {/* DETAILS */}
+
+          <div className="hero-details">
+
+            <span className="category-pill">
+
+              {story.category}
+
+            </span>
+
+            <h1>
+
+              {story.title}
+
+            </h1>
+
+            {story.subtitle && (
+
+              <h3>
+
+                {story.subtitle}
+
+              </h3>
+
+            )}
+
+            <p className="author-name">
+
+              By
+
+              <strong>
+
+                {" "}
+
+                {story.author?.username}
+
+              </strong>
+
+            </p>
+
+            <div className="story-stats">
+
+              <div>
+
+                👁 {story.views} Views
+
+              </div>
+
+              <div>
+
+                📚 {chapters.length} Chapters
+
+              </div>
+
+              <div>
+
+                ⏱ {readingTime} hr Read
+
+              </div>
+
+              <div>
+
+                🌎 {story.language}
+
+              </div>
+
+            </div>
+
+            <div className="hero-buttons">
+
+              {chapters.length > 0 && (
+
+                <button
+
+                  className="read-btn"
+
+                  onClick={()=>
+
+                    navigate(`/read/${chapters[0]._id}`)
+
+                  }
+
+                >
+
+                  📖 Start Reading
+
+                </button>
+
+              )}
+
+              <button className="bookmark-btn">
+
+                🔖 Bookmark
+
+              </button>
+
+              <button className="like-btn">
+
+                ❤️ Like
+
+              </button>
+
+              <button className="share-btn">
+
+                📤 Share
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* MAIN */}
+
+      <div className="story-container">
+
+        {/* ABOUT */}
+
+        <div className="about-card">
+
+          <h2>
+
+            About This Story
+
+          </h2>
+
+          <p>
+
+            {story.shortDescription}
+
+          </p>
+
+        </div>
+
+                {/* ==========================
+            Author Card
+        ========================== */}
+
+        <div className="author-card">
+
+          <div className="author-avatar">
+
+            {story.author?.username?.charAt(0).toUpperCase() || "A"}
+
+          </div>
+
+          <div className="author-info">
+
+            <h3>
+
+              {story.author?.username}
+
+            </h3>
+
+            <p>
+
+              Passionate storyteller creating immersive worlds for readers.
+
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* ==========================
+            Table Of Contents
+        ========================== */}
+
+        <div className="toc-card">
+
+          <h2>
+
+            Table Of Contents
+
+          </h2>
+
+          {chapters.length === 0 ? (
+
+            <div className="empty-chapters">
+
+              No Published Chapters Yet.
+
+            </div>
+
+          ) : (
+
+            chapters.map((chapter) => (
+
+              <div
+                key={chapter._id}
+                className="chapter-item"
+                onClick={() =>
+                  navigate(`/read/${chapter._id}`)
+                }
+              >
+
+                <div className="chapter-left">
+
+                  <span className="chapter-pill">
+
+                    Chapter {chapter.chapterNumber}
+
+                  </span>
+
+                  <h3>
+
+                    {chapter.title}
+
+                  </h3>
+
+                </div>
+
+                <button
+                  className="chapter-read-btn"
+                >
+
+                  Read →
+
+                </button>
+
+              </div>
+
+            ))
+
+          )}
+
+        </div>
+
+        {/* ==========================
+            Related Stories
+        ========================== */}
+
+        {relatedStories.length > 0 && (
+
+          <div className="related-section">
+
+            <h2>
+
+              You May Also Like
+
+            </h2>
+
+            <div className="related-grid">
+
+              {relatedStories.map((item) => (
+
+                <StoryCard
+                  key={item._id}
+                  story={item}
+                />
+
+              ))}
+
+            </div>
+
+          </div>
+
+        )}
+
+        {/* ==========================
+            Footer
+        ========================== */}
+
+        <div className="story-footer">
+
+          <div className="footer-divider"></div>
+
+          <h3>
+
+            Thank You For Reading ❤️
+
+          </h3>
+
+          <p>
+
+            Continue exploring thousands of stories on
+
+            <span className="brand">
+
+              {" "}StoryHub
+
+            </span>
+
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
 
-    {relatedStories.length > 0 && (
-      <>
-        <hr style={{ margin: "60px 0" }} />
+    </>
 
-        <h2>Related Stories</h2>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit,minmax(250px,1fr))",
-            gap: "20px",
-            marginTop: "30px",
-          }}
-        >
-          {relatedStories.map((story) => (
-            <StoryCard
-              key={story._id}
-              story={story}
-            />
-          ))}
-        </div>
-      </>
-    )}
-
-  </div>
-
-</div>
-</>
   );
+
 }
 
 export default StoryDetails;

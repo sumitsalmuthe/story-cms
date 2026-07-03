@@ -1,38 +1,48 @@
 const express = require("express");
-const cloudinary = require("../config/cloudinary");
-
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  try {
-    console.log("Upload Started");
+const upload = require("../middleware/upload");
+const cloudinary = require("../config/cloudinary");
 
-    const result = await cloudinary.uploader.upload(
-      req.body.image,
-      {
-        resource_type: "image",
+router.post(
+  "/",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+
+      if (!req.file) {
+        return res.status(400).json({
+          message: "No image selected",
+        });
       }
-    );
 
-    console.log("Upload Success");
-    console.log(result);
+      const base64 =
+        `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
 
-    res.json({
-      url: result.secure_url,
-    });
+      const result =
+        await cloudinary.uploader.upload(
+          base64,
+          {
+            folder: "storyhub",
+          }
+        );
 
-  } catch (error) {
+      res.json({
+        success: true,
+        url: result.secure_url,
+      });
 
-    console.log("========== CLOUDINARY ERROR ==========");
-    console.dir(error, { depth: null });
-    console.log("=====================================");
+    } catch (error) {
 
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+      console.log(error);
 
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+
+    }
   }
-});
+);
 
 module.exports = router;

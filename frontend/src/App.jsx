@@ -13,7 +13,17 @@ import BecomeWriter from "./pages/BecomeWriter";
 import MainDashboard from "./pages/MainDashboard";
 import WriterDashboard from "./pages/writer/Dashboard";
 
-import ProtectedRoute from "./components/ProtectedRoute";
+import MyStories from "./pages/writer/MyStories";
+import CreateStory from "./pages/writer/CreateStory";
+import Drafts from "./pages/writer/Drafts";
+import Analytics from "./pages/writer/Analytics";
+import Settings from "./pages/writer/Settings";
+
+import StoryEditor from "./pages/writer/StoryEditor";
+
+import ReadChapter from "./pages/ReadChapter";
+
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
@@ -75,13 +85,72 @@ function App() {
         />
 
         <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <WriterDashboard />
-            </ProtectedRoute>
-          }
-        />
+  path="/writer/dashboard"
+  element={
+    <ProtectedRoute>
+      <WriterDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/writer/stories"
+  element={
+    <ProtectedRoute>
+      <MyStories />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/writer/create"
+  element={
+    <ProtectedRoute>
+      <CreateStory />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/writer/drafts"
+  element={
+    <ProtectedRoute>
+      <Drafts />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/writer/analytics"
+  element={
+    <ProtectedRoute>
+      <Analytics />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/writer/settings"
+  element={
+    <ProtectedRoute>
+      <Settings />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/writer/editor/:storyId"
+  element={
+    <ProtectedRoute>
+      <StoryEditor />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/read/:chapterId"
+  element={<ReadChapter />}
+/>
 
       </Routes>
     </BrowserRouter>

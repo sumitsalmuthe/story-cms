@@ -29,7 +29,7 @@ function NavbarV2() {
           Community
         </Link>
 
-        <Link to="/dashboard">
+        <Link to="/writer/dashboard">
           Write
         </Link>
 
@@ -48,7 +48,7 @@ function NavbarV2() {
         </button>
 
         <Link
-          to="/dashboard"
+          to="/writer/dashboard"
           className="dashboard-btn-v2"
         >
           Dashboard

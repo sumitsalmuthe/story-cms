@@ -53,7 +53,7 @@ function BecomeWriter() {
         "🎉 Congratulations! You are now a Writer."
       );
 
-      navigate("/dashboard");
+navigate("/writer/dashboard");
 
       window.location.reload();
 

@@ -8,6 +8,8 @@ const storyRoutes = require("./routes/storyRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const connectDB = require("./config/db");
 
+const chapterRoutes = require("./routes/chapterRoutes");
+
 const authRoutes =
 require("./routes/authRoutes");
 
@@ -33,6 +35,7 @@ app.use(
 );
 
 app.use("/api/stories", storyRoutes);
+app.use("/api/chapters", chapterRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/auth", authRoutes);
 

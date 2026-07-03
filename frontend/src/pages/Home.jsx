@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/layout/Navbar";
 import API from "../services/api";
-import Footer from "../components/Footer";
+import Footer from "../components/layout/Footer";
 import HeroBanner from "../components/HeroBanner";
 import StoryRow from "../components/StoryRow";
 import GenreSection from "../components/GenreSection";
