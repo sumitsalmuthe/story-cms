@@ -4,7 +4,7 @@ import API from "../services/api";
 import Footer from "../components/layout/Footer";
 import HeroBanner from "../components/hero/HeroBanner";
 import StoryRow from "../components/story/StoryRow";
-import GenreSection from "../components/GenreSection";
+import GenreSection from "../components/genre/GenreSection";
 
 import WriterBanner from "../components/WriterBanner";
 
